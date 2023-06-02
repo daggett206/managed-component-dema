@@ -8,8 +8,6 @@ export const track = async (event: MCEvent, payload: DemaPayload) => {
     url.searchParams.set(key, value)
   }
 
-  console.log('url', url.toString(), event.client.userAgent)
-
   return fetch(url.toString(), {
     headers: {
       'User-Agent': event.client.userAgent,

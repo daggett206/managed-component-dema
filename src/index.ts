@@ -2,7 +2,7 @@ import { ComponentSettings, Manager } from '@managed-components/types'
 import { track } from './track'
 import { getOrderPayload, getPageviewPayload } from './payload'
 
-export default async function (manager: Manager, settings: ComponentSettings) {
+export default function (manager: Manager, settings: ComponentSettings) {
   manager.addEventListener('pageview', event => {
     return track(event, getPageviewPayload(event, settings))
   })
