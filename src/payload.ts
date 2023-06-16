@@ -5,6 +5,7 @@ import { DemaOrder, DemaPayload, EventOrder } from './types'
 export const commonPayload = (event: MCEvent): Partial<DemaPayload> => ({
   uid: updateAndReturnUid(event),
   u: event.client.url.toString(),
+  ua: event.client.userAgent,
   r: event.client.referer,
   v: '1.0.0',
   _nc: Date.now().toString(),

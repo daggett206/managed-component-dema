@@ -1,23 +1,40 @@
 import { ComponentSettings, Manager } from '@managed-components/types'
-import { track } from './track'
+import { getTrackRequest } from './getTrackRequest'
 import { getOrderPayload, getPageviewPayload } from './payload'
 
 export default function (manager: Manager, settings: ComponentSettings) {
-  manager.addEventListener('pageview', event => {
-    return track(event, getPageviewPayload(event, settings))
+  manager.addEventListener('pageview', async event => {
+    const response = await Promise.resolve(getPageviewPayload(event, settings))
+      .then(getTrackRequest)
+      .then(manager.fetch.bind(manager))
+
+    console.log('Response: ', JSON.stringify(response))
+    return
   })
 
-  manager.addEventListener('ecommerce', event => {
+  manager.addEventListener('ecommerce', async event => {
     const action =
       event.name || event.payload.name || event.payload.ecommerce.name
 
     switch (action) {
       case 'Product Viewed': {
-        return track(event, getPageviewPayload(event, settings))
+        const response = await Promise.resolve(
+          getPageviewPayload(event, settings)
+        )
+          .then(getTrackRequest)
+          .then(manager.fetch.bind(manager))
+
+        console.log('Response: ', JSON.stringify(response))
+        return
       }
 
       case 'Order Completed': {
-        return track(event, getOrderPayload(event, settings))
+        const response = await Promise.resolve(getOrderPayload(event, settings))
+          .then(getTrackRequest)
+          .then(manager.fetch.bind(manager))
+
+        console.log('Response: ', JSON.stringify(response))
+        return
       }
 
       default: {
