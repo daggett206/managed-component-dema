@@ -13,7 +13,13 @@ export const prepareUrl = (payload: DemaPayload): URL => {
 export const getTrackRequest = async (
   payload: DemaPayload
 ): Promise<Request> => {
-  return new Request(prepareUrl(payload).toString(), {
+  const endpoint = prepareUrl(payload).toString()
+  console.log(
+    'create Request object using payload',
+    JSON.stringify(payload),
+    endpoint
+  )
+  return new Request(endpoint, {
     headers: {
       'User-Agent': payload.ua ?? '',
     },

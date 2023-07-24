@@ -15,11 +15,13 @@ export const getPageviewPayload = (
   event: MCEvent,
   settings: ComponentSettings
 ): DemaPayload => {
+  console.log('creating pageview payload', JSON.stringify({ event, settings }))
   return <DemaPayload>{
     ...commonPayload(event),
     e: 'pageview',
     i: settings.demaId,
     m: JSON.stringify({
+      id: event.payload.ecommerce?.sku ?? '',
       productId: event.payload.ecommerce?.product_id ?? '',
       ip: event.client.ip,
       country: event.client.ip,
@@ -45,7 +47,7 @@ export const getOrderPayload = (
         tax: String(payload.tax ?? ''),
         voucher: '',
         products: payload.products.map(product => ({
-          id: String(product.id ?? ''),
+          id: String(product.sku ?? ''),
           productId: String(product.product_id ?? ''),
           price: String(product.price ?? ''),
           quantity: product.quantity ?? 1,
